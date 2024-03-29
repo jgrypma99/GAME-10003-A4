@@ -25,6 +25,58 @@
                     Raylib.BeginDrawing();
                     Raylib.ClearBackground(Color.White);
 
+
+                    //Draw highlights on board - Jacob
+                    //Checks for mouse position and highlights the cell the player is currently hovering over
+                    int mousePosX = Raylib.GetMouseX();
+                    int mousePosY = Raylib.GetMouseY();
+
+                    if (mousePosX > 0 && mousePosX < 100 && mousePosY > 0 && mousePosY < 100)
+                    {
+                        Raylib.DrawRectangle(13, 13, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 100 && mousePosX < 200 && mousePosY > 0 && mousePosY < 100)
+                    {
+                        Raylib.DrawRectangle(113, 13, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 200 && mousePosX < 300 && mousePosY > 0 && mousePosY < 100)
+                    {
+                        Raylib.DrawRectangle(213, 13, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 0 && mousePosX < 100 && mousePosY > 100 && mousePosY < 200)
+                    {
+                        Raylib.DrawRectangle(13, 113, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 100 && mousePosX < 200 && mousePosY > 100 && mousePosY < 200)
+                    {
+                        Raylib.DrawRectangle(113, 113, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 200 && mousePosX < 300 && mousePosY > 100 && mousePosY < 200)
+                    {
+                        Raylib.DrawRectangle(213, 113, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 0 && mousePosX < 100 && mousePosY > 200 && mousePosY < 300)
+                    {
+                        Raylib.DrawRectangle(13, 213, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 100 && mousePosX < 200 && mousePosY > 200 && mousePosY < 300)
+                    {
+                        Raylib.DrawRectangle(113, 213, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 200 && mousePosX < 300 && mousePosY > 200 && mousePosY < 300)
+                    {
+                        Raylib.DrawRectangle(213, 213, 75, 75, Color.LightGray);
+                    }
+
+
                     // Draw the board
                     for (int y = 0; y < boardSize; y++)
                     {
@@ -46,7 +98,8 @@
                             // Draw cell borders
                             Raylib.DrawRectangleLinesEx(cell, 2, Color.Black);
                         }
-                    }
+                    }                    
+
 
                     // Check for player input
                     if (Raylib.IsMouseButtonPressed(MouseButton.Left))
