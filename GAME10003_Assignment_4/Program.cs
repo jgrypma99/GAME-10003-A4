@@ -1,55 +1,182 @@
-﻿
-
-namespace GAME10003_Assignment_4
+﻿namespace GAME10003_Assignment_4
 {
-    // Include necessary libraries
+    using System;
+  
     using Raylib_cs;
-    using System.Numerics;
 
-    namespace ExampleProject
+    namespace GAME10003_Assignment_4
     {
-        internal class Program
+        class Program
         {
-            // If you need variables in the Program class (outside functions), you must mark them as static
-            static string title = "Game Title";
-
             static void Main(string[] args)
             {
-                // Create a window to draw to. The arguments define width and height
-                Raylib.InitWindow(800, 600, title);
-                // Set the target frames-per-second (FPS)
-                Raylib.SetTargetFPS(60);
+                const int screenWidth = 300;
+                const int screenHeight = 300;
+                const int boardSize = 3;
 
-                // Setup your game. This is a function YOU define.
-                Setup();
+                Raylib.InitWindow(screenWidth, screenHeight, "Tic Tac Toe");
 
-                // Loop so long as window should not close
-                while (!Raylib.WindowShouldClose())
+                int[,] board = new int[boardSize, boardSize];
+                int currentPlayer = 1;
+                bool gameOver = false;
+
+                while (!Raylib.WindowShouldClose() && !gameOver)
                 {
-                    // Enable drawing to the canvas (window)
                     Raylib.BeginDrawing();
-                    // Clear the canvas with one color
-                    Raylib.ClearBackground(Color.RayWhite);
+                    Raylib.ClearBackground(Color.White);
 
-                    // Your game code here. This is a function YOU define.
-                    Update();
+                    //Draw highlights on board - Jacob
+                    //Checks for mouse position and highlights the cell the player is currently hovering over
+                    int mousePosX = Raylib.GetMouseX();
+                    int mousePosY = Raylib.GetMouseY();
 
-                    // Stop drawing to the canvas, begin displaying the frame
+                    if (mousePosX > 0 && mousePosX < 100 && mousePosY > 0 && mousePosY < 100)
+                    {
+                        Raylib.DrawRectangle(13, 13, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 100 && mousePosX < 200 && mousePosY > 0 && mousePosY < 100)
+                    {
+                        Raylib.DrawRectangle(113, 13, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 200 && mousePosX < 300 && mousePosY > 0 && mousePosY < 100)
+                    {
+                        Raylib.DrawRectangle(213, 13, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 0 && mousePosX < 100 && mousePosY > 100 && mousePosY < 200)
+                    {
+                        Raylib.DrawRectangle(13, 113, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 100 && mousePosX < 200 && mousePosY > 100 && mousePosY < 200)
+                    {
+                        Raylib.DrawRectangle(113, 113, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 200 && mousePosX < 300 && mousePosY > 100 && mousePosY < 200)
+                    {
+                        Raylib.DrawRectangle(213, 113, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 0 && mousePosX < 100 && mousePosY > 200 && mousePosY < 300)
+                    {
+                        Raylib.DrawRectangle(13, 213, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 100 && mousePosX < 200 && mousePosY > 200 && mousePosY < 300)
+                    {
+                        Raylib.DrawRectangle(113, 213, 75, 75, Color.LightGray);
+                    }
+
+                    if (mousePosX > 200 && mousePosX < 300 && mousePosY > 200 && mousePosY < 300)
+                    {
+                        Raylib.DrawRectangle(213, 213, 75, 75, Color.LightGray);
+                    }
+
+                    // Draw the board
+                    for (int y = 0; y < boardSize; y++)
+                    {
+                        for (int x = 0; x < boardSize; x++)
+                        {
+                            Rectangle cell = new Rectangle(x * (screenWidth / boardSize), y * (screenHeight / boardSize),
+                                                       screenWidth / boardSize, screenHeight / boardSize);
+
+                            // Draw X or O
+                            if (board[x, y] == 1)
+                            {
+                                Raylib.DrawText("X", (int)(cell.X + cell.Width / 2 - 10), (int)(cell.Y + cell.Height / 2 - 20), 40, Color.Black);
+                            }
+                            else if (board[x, y] == 2)
+                            {
+                                Raylib.DrawText("O", (int)(cell.X + cell.Width / 2 - 10), (int)(cell.Y + cell.Height / 2 - 20), 40, Color.Black);
+                            }
+
+                            // Draw cell borders
+                            Raylib.DrawRectangleLinesEx(cell, 2, Color.Black);
+
+
+                        }
+                    }                    
+
+                 
+                    // Check for player input
+                    if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+                    {
+                        // Get cell clicked
+                        int mouseX = Raylib.GetMouseX();
+                        int mouseY = Raylib.GetMouseY();
+                        int cellX = mouseX / (screenWidth / boardSize);
+                        int cellY = mouseY / (screenHeight / boardSize);
+
+                        // Check if the cell is empty and the game is not over
+                        if (board[cellX, cellY] == 0)
+                        {
+                            board[cellX, cellY] = currentPlayer;
+
+                            // Check for win condition
+                            if (CheckWin(board, currentPlayer))
+                            {
+                                Console.WriteLine("Player " + currentPlayer + " wins!");
+                                gameOver = true;
+                            }
+                            else if (IsBoardFull(board))
+                            {
+                                Console.WriteLine("It's a draw!");
+                                gameOver = true;
+                            }
+                            else
+                            {
+                                // Switch players
+                                currentPlayer = currentPlayer == 1 ? 2 : 1;
+                            }
+                        }
+                    }
+
                     Raylib.EndDrawing();
                 }
-                // Close the window
+
                 Raylib.CloseWindow();
             }
 
-            static void Setup()
+            static bool CheckWin(int[,] board, int player)
             {
-                // Your one-time setup code here
+                // Check rows and columns
+                for (int i = 0; i < 3; i++)
+                {
+                    if ((board[i, 0] == player && board[i, 1] == player && board[i, 2] == player) ||
+                    (board[0, i] == player && board[1, i] == player && board[2, i] == player))
+                    {
+                        return true;
+                    }
+                }
+
+                // Check diagonals
+                if ((board[0, 0] == player && board[1, 1] == player && board[2, 2] == player) ||
+                (board[0, 2] == player && board[1, 1] == player && board[2, 0] == player))
+                {
+                    return true;
+                }
+
+                return false;
             }
 
-            static void Update()
+            static bool IsBoardFull(int[,] board)
             {
-                // Your game code run each frame here
+                for (int y = 0; y < board.GetLength(1); y++)
+                {
+                    for (int x = 0; x < board.GetLength(0); x++)
+                    {
+                        if (board[x, y] == 0)
+                        {
+                        return false;
+                        }
+                    }
+                }
+                return true;
             }
         }
+
     }
-}
+ }
