@@ -25,6 +25,7 @@
                     Raylib.BeginDrawing();
                     Raylib.ClearBackground(Color.White);
 
+
                     //Draw highlights on board - Jacob
                     //Checks for mouse position and highlights the cell the player is currently hovering over
                     int mousePosX = Raylib.GetMouseX();
@@ -75,6 +76,7 @@
                         Raylib.DrawRectangle(213, 213, 75, 75, Color.LightGray);
                     }
 
+
                     // Draw the board
                     for (int y = 0; y < boardSize; y++)
                     {
@@ -95,12 +97,10 @@
 
                             // Draw cell borders
                             Raylib.DrawRectangleLinesEx(cell, 2, Color.Black);
-
-
                         }
                     }                    
 
-                 
+
                     // Check for player input
                     if (Raylib.IsMouseButtonPressed(MouseButton.Left))
                     {
