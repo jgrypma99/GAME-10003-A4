@@ -8,8 +8,20 @@
     {
         class Program
         {
+            
             static void Main(string[] args)
             {
+                //Initialize Audio Device - Khaleel
+                Raylib.InitAudioDevice();
+
+                //Load Music Stream and declare variable - Khaleel
+                Music music = Raylib.LoadMusicStream("/../../../resources/lofibeat.wav");
+                
+                //Play Music - Khaleel
+                Raylib.PlayMusicStream(music);
+            
+                
+
                 const int screenWidth = 300;
                 const int screenHeight = 300;
                 const int boardSize = 3;
